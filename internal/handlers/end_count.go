@@ -10,6 +10,13 @@ type EndCount struct {
 	Count    int
 }
 
+func (endcount *EndCount) Print(sql string) {
+	fmt.Println("Query:", sql)
+	fmt.Println("Result:")
+	fmt.Println("ArcherID:", endcount.ArcherID)
+	fmt.Println("End Count:", endcount.Count)
+}
+
 func GetEndCountTotal(db *sql.DB, sqlStatement string) (*EndCount, error) {
 	var endcount EndCount
 
