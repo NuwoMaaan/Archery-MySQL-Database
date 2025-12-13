@@ -10,25 +10,36 @@ type EndCount struct {
 	Count    int
 }
 
-func (endcount *EndCount) Print(sql string) {
+type EndCounts []*EndCount
+
+func (result EndCounts) Print(sql string) {
 	fmt.Println("Query:", sql)
 	fmt.Println("Result:")
-	fmt.Println("ArcherID:", endcount.ArcherID)
-	fmt.Println("End Count:", endcount.Count)
+	for _, r := range result {
+		fmt.Printf("ArcherID: %d, Ends Count: %d\n", r.ArcherID, r.Count)
+	}
 }
 
-func GetEndCountTotal(db *sql.DB, sqlStatement string) (*EndCount, error) {
-	var endcount EndCount
-
-	row := db.QueryRow(sqlStatement)
-	err := row.Scan(&endcount.ArcherID, &endcount.Count)
+func GetEndCountTotal(db *sql.DB, sqlStatement string) (QueryResult, error) {
+	rows, err := db.Query(sqlStatement)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			fmt.Println("No rows found.")
-			return nil, nil
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results EndCounts
+
+	for rows.Next() {
+		s := &EndCount{}
+		if err := rows.Scan(&s.ArcherID, &s.Count); err != nil {
+			return nil, err
 		}
+		results = append(results, s)
+	}
+
+	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return &endcount, nil
+	return results, nil
 }
