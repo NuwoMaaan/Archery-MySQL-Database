@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type ArcherEndScore struct {
+type ArcherEndScoreDATE struct {
 	EndID      int
 	RoundNum   int
 	FirstName  string
@@ -17,12 +17,12 @@ type ArcherEndScore struct {
 	TOTAL      int
 }
 
-type ArcherEndScores []*ArcherEndScore
+type ArcherEndScoresD []*ArcherEndScoreDATE
 
-func (result ArcherEndScores) Print(sql string) {
+func (result ArcherEndScoresD) Print(sql string) {
 	println("query:", sql)
 	for _, r := range result {
-		fmt.Printf("EndID: %d, Round: %d, Name: %s %s, RoundName: %s, Date: %s, Distance: %s, TargetType: %s, Total: %d\n",
+		fmt.Printf("EndID: %d Round: %d, FirstName: %s LastName: %s RoundName: %s, Date: %s, Distance: %s TargetType: %s, Total: %d\n",
 			r.EndID, r.RoundNum, r.FirstName, r.LastName, r.RoundName, r.Date, r.Distance, r.TargetType, r.TOTAL)
 	}
 }
@@ -34,10 +34,10 @@ func GetEndCountOrderTotalByDate(db *sql.DB, sqlStatement string) (QueryResult, 
 	}
 	defer rows.Close()
 
-	var results ArcherEndScores
+	var results ArcherEndScoresD
 
 	for rows.Next() {
-		s := &ArcherEndScore{}
+		s := &ArcherEndScoreDATE{}
 		if err := rows.Scan(
 			&s.EndID, &s.RoundNum, &s.FirstName, &s.LastName,
 			&s.RoundName, &s.Date, &s.Distance, &s.TargetType, &s.TOTAL,

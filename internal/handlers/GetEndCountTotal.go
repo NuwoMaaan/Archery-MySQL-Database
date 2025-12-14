@@ -16,7 +16,7 @@ func (result EndCounts) Print(sql string) {
 	fmt.Println("Query:", sql)
 	fmt.Println("Result:")
 	for _, r := range result {
-		fmt.Printf("ArcherID: %d, Ends Count: %d\n", r.ArcherID, r.Count)
+		fmt.Printf("ArcherID: %d, EndsCount: %d\n", r.ArcherID, r.Count)
 	}
 }
 

@@ -16,4 +16,10 @@ var Registry = map[string]QueryHandler{
 	"GetEndCountOrderTotalByDate": func(db *sql.DB, sql string) (QueryResult, error) {
 		return GetEndCountOrderTotalByDate(db, sql)
 	},
+	"GetEndCountOrderTotalByRoundNum": func(db *sql.DB, sql string) (QueryResult, error) {
+		return GetEndCountOrderTotalByRoundNum(db, sql)
+	},
+	"GetRoundAndCategoryDetails": func(db *sql.DB, sql string) (QueryResult, error) {
+		return GetRoundAndCategoryDetails(db, sql)
+	},
 }

@@ -12,6 +12,13 @@ import (
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/queries"
 )
 
+func GetInput(prompt string, r *bufio.Reader) (string, error) {
+	fmt.Print(prompt)
+	input, err := r.ReadString('\n')
+
+	return strings.TrimSpace(input), err
+}
+
 func MainMenu(db *sql.DB) {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -21,10 +28,7 @@ func MainMenu(db *sql.DB) {
 			fmt.Printf("%d) %s\n", i+1, opt.Description)
 		}
 		fmt.Println("q) Quit")
-		fmt.Print("Enter option: ")
-
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(input)
+		input, _ := GetInput("Enter option:", reader)
 
 		if strings.EqualFold(input, "q") {
 			fmt.Println("Exiting menu.")
@@ -41,7 +45,7 @@ func MainMenu(db *sql.DB) {
 
 		handler, ok := handlers.Registry[selected.HandlerKey]
 		if !ok {
-			fmt.Println("Handler not implemented.")
+			fmt.Println("invalid option.")
 			continue
 		}
 
@@ -52,6 +56,6 @@ func MainMenu(db *sql.DB) {
 		}
 
 		result.Print(selected.SQL)
-		fmt.Print("\n\n")
+		fmt.Print("\n")
 	}
 }
