@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/handlers"
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/queries"
 )
 
@@ -43,13 +42,7 @@ func MainMenu(db *sql.DB) {
 		}
 		selected := queries.Options[choice-1]
 
-		handler, ok := handlers.Registry[selected.HandlerKey]
-		if !ok {
-			fmt.Println("invalid option.")
-			continue
-		}
-
-		result, err := handler(db, selected.SQL)
+		result, err := selected.Handler(db, selected.SQL)
 		if err != nil {
 			fmt.Println("Error:", err)
 			continue

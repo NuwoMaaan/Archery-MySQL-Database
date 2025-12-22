@@ -19,7 +19,7 @@ func (archer *Archer) Print(sql string) {
 	fmt.Println(" Gender    :", archer.Gender)
 }
 
-func GetArcherByID(db *sql.DB, sqlStatement string) (*Archer, error) {
+func GetArcherByID(db *sql.DB, sqlStatement string) (QueryResult, error) {
 	var archer Archer
 
 	row := db.QueryRow(sqlStatement)
