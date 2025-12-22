@@ -3,24 +3,12 @@ package handlers
 import (
 	"database/sql"
 	"fmt"
+
+	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
 )
 
-type Archer struct {
-	FirstName string
-	LastName  string
-	Gender    string
-}
-
-func (archer *Archer) Print(sql string) {
-	fmt.Println("Query:", sql)
-	fmt.Println("RESULT:")
-	fmt.Println(" First Name:", archer.FirstName)
-	fmt.Println(" Last Name :", archer.LastName)
-	fmt.Println(" Gender    :", archer.Gender)
-}
-
-func GetArcherByID(db *sql.DB, sqlStatement string) (QueryResult, error) {
-	var archer Archer
+func GetArcherByID(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
+	var archer results.Archer
 
 	row := db.QueryRow(sqlStatement)
 	err := row.Scan(&archer.FirstName, &archer.LastName, &archer.Gender)

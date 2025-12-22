@@ -2,11 +2,12 @@ package queries
 
 import (
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/handlers"
+	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
 
 	"database/sql"
 )
 
-type QueryHandler func(db *sql.DB, sql string) (handlers.QueryResult, error)
+type QueryHandler func(db *sql.DB, sql string) (results.QueryResult, error)
 
 type QueryOption struct {
 	Description string
