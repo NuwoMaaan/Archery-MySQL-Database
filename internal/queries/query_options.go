@@ -41,9 +41,14 @@ var Options = []QueryOption{
 		SQL:         "SELECT round.RoundID, round.RoundName, catergory.AgeGroup, catergory.GenderBracket, catergory.BowType, 10m,20m,30m,40m,50m,60m,70m,90m FROM catergory INNER JOIN round on round.RoundID = catergory.RoundID WHERE round.RoundName = 'Perth' AND catergory.AgeGroup = 'Under 21'",
 		Handler:     handlers.GetRoundAndCategoryDetails,
 	},
-	// {
-	// 	Description: "Search archers score per all ends above certain value (50)",
-	// 	SQL:         "SELECT end.ArcherID, COUNT(TOTAL) FROM end LEFT JOIN archer ON archer.ArcherID = end.ArcherID WHERE TOTAL > 50 AND Approved = 1 GROUP BY end.ArcherID",
-	// 	Handler:     handlers.GetArchersScoreAboveValue,
-	// },
+	{
+		Description: "Search archers score per all ends above certain value (50)",
+		SQL:         "SELECT end.ArcherID, COUNT(TOTAL) FROM end LEFT JOIN archer ON archer.ArcherID = end.ArcherID WHERE TOTAL > 50 AND Approved = 1 GROUP BY end.ArcherID",
+		Handler:     handlers.GetArcherScoreAboveValue,
+	},
+	{
+		Description: "Search championship scores using inner joins of Archer, End and Category tables",
+		SQL:         "SELECT archerevent.EventName, catergory.AgeGroup, catergory.GenderBracket, archer.FirstName, archer.LastName, SUM(TOTAL) as Total FROM end INNER JOIN archer ON archer.ArcherID = end.ArcherID INNER JOIN archerevent on archerevent.EventID = end.EventID INNER JOIN catergory on catergory.CatergoryID = end.CatergoryID WHERE end.EventID = 603 AND Approved = 1 GROUP BY end.ArcherID, catergory.AgeGroup, catergory.GenderBracket;",
+		Handler:     handlers.GetChampionScoresByEventID,
+	},
 }

@@ -6,20 +6,18 @@ import (
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
 )
 
-func GetArcherScoreAboveValue(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
-	rows, err := db.Query(sqlStatement)
+func GetChampionScoresByEventID(db *sql.DB, sql string) (results.QueryResult, error) {
+	rows, err := db.Query(sql)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var result results.AboveScoreValue
+	var result results.ChampionScores
 
 	for rows.Next() {
-		s := &results.ArcherScoreAboveValue{}
-		if err := rows.Scan(
-			&s.ArcherID, &s.Total,
-		); err != nil {
+		s := &results.ChampionScoresTotal{}
+		if err := rows.Scan(&s.EventName, &s.AgeGroup, &s.GenderBracket, &s.FirstName, &s.LastName, &s.Total); err != nil {
 			return nil, err
 		}
 		result = append(result, s)
@@ -30,4 +28,5 @@ func GetArcherScoreAboveValue(db *sql.DB, sqlStatement string) (results.QueryRes
 	}
 
 	return result, nil
+
 }

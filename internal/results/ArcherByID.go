@@ -9,7 +9,7 @@ type Archer struct {
 }
 
 func (archer *Archer) Print(sql string) {
-	fmt.Println("Query:", sql)
+	fmt.Println("QUERY:", sql)
 	fmt.Println("RESULT:")
 	fmt.Println(" First Name:", archer.FirstName)
 	fmt.Println(" Last Name :", archer.LastName)

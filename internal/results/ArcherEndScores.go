@@ -16,7 +16,7 @@ type ArcherEndScore struct {
 }
 
 func (result ArcherEndScores) Print(sql string) {
-	println("query:", sql)
+	println("QUERY:", sql)
 	for _, r := range result {
 		fmt.Printf("EndID: %d Round: %d, FirstName: %s LastName: %s RoundName: %s, Date: %s, Distance: %s TargetType: %s, Total: %d\n",
 			r.EndID, r.RoundNum, r.FirstName, r.LastName, r.RoundName, r.Date, r.Distance, r.TargetType, r.TOTAL)

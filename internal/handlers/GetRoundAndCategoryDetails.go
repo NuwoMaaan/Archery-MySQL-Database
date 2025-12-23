@@ -2,25 +2,9 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
 )
-
-type Details []*results.DetailsRoundAndCategory
-
-func (result Details) Print(sql string) {
-	println("query:", sql)
-	for _, r := range result {
-		fmt.Printf(
-			"RoundID: %d, RoundName: %s, AgeGroup: %s, GenderBracket: %s, BowType: %s\n"+
-				"10m: %s, 20m: %s, 30m: %s, 40m: %s, 50m: %s, 60m: %s, 70m: %s, 90m: %s\n",
-			r.RoundID, r.RoundName, r.AgeGroup, r.GenderBracket, r.BowType,
-			r.Distance10m.String, r.Distance20m.String, r.Distance30m.String, r.Distance40m.String,
-			r.Distance50m.String, r.Distance60m.String, r.Distance70m.String, r.Distance90m.String,
-		)
-	}
-}
 
 func GetRoundAndCategoryDetails(db *sql.DB, sql string) (results.QueryResult, error) {
 	rows, err := db.Query(sql)
@@ -29,7 +13,7 @@ func GetRoundAndCategoryDetails(db *sql.DB, sql string) (results.QueryResult, er
 	}
 	defer rows.Close()
 
-	var result Details
+	var result results.Details
 
 	for rows.Next() {
 		s := &results.DetailsRoundAndCategory{}
