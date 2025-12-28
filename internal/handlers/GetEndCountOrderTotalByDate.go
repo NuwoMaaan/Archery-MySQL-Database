@@ -18,8 +18,8 @@ func GetEndCountOrderTotalByDate(db *sql.DB, sqlStatement string) (results.Query
 	for rows.Next() {
 		s := &results.ArcherEndScore{}
 		if err := rows.Scan(
-			&s.EndID, &s.RoundNum, &s.FirstName, &s.LastName,
-			&s.RoundName, &s.Date, &s.Distance, &s.TargetType, &s.TOTAL,
+			&s.RoundNum, &s.RoundName, &s.ArcherID, &s.FirstName, &s.LastName,
+			&s.Date, &s.RoundTotalSum,
 		); err != nil {
 			return nil, err
 		}

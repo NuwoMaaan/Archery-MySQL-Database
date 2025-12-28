@@ -6,7 +6,7 @@ import (
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
 )
 
-func GetEndCountOrderTotalByRoundNum(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
+func GetEndCountOrderTotalByTotal(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
 		return nil, err

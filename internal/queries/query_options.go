@@ -27,13 +27,18 @@ var Options = []QueryOption{
 		Handler:     handlers.GetEndCountTotal,
 	},
 	{
-		Description: "Search archers scores per end between set dates ORDER BY TOTAL",
-		SQL:         "SELECT endID, RoundNum, FirstName, LastName, round.RoundName, Date, Distance, TargetType, TOTAL FROM archer INNER JOIN end ON archer.ArcherID = end.ArcherID INNER JOIN round on round.RoundID = end.RoundID WHERE archer.ArcherID = 1 AND Approved = 1 AND round.RoundName = 'Hobart' AND Date between '2023-04-01' and '2023-04-20' ORDER BY TOTAL DESC LIMIT 15",
+		Description: "Score By Round Order By Total",
+		SQL:         "SELECT RoundNum, round.RoundName, archer.ArcherID, archer.FirstName, Date, archer.LastName, SUM(total) AS RoundTotalSum FROM end INNER JOIN round on round.RoundID = end.RoundID INNER JOIN archer on archer.ArcherID = end.ArcherID WHERE archer.ArcherID = 1 AND Approved = 1 AND round.RoundName = 'Hobart' AND Date between '2023-04-01' and '2023-04-20' GROUP BY RoundNum, archer.ArcherID, archer.FirstName, archer.LastName, round.RoundName, Date ORDER BY RoundTotalSum DESC LIMIT 10",
+		Handler:     handlers.GetEndCountOrderTotalByTotal,
+	},
+	{
+		Description: "Select Score By Round Order By Date",
+		SQL:         "SELECT RoundNum, round.RoundName, archer.ArcherID, archer.FirstName, Date, archer.LastName, SUM(total) AS RoundTotalSum FROM end INNER JOIN round on round.RoundID = end.RoundID INNER JOIN archer on archer.ArcherID = end.ArcherID WHERE archer.ArcherID = 1 AND Approved = 1 AND round.RoundName = 'Hobart' AND Date between '2023-04-01' and '2023-04-20' GROUP BY RoundNum, archer.ArcherID, archer.FirstName, archer.LastName, round.RoundName, Date ORDER BY Date DESC LIMIT 10",
 		Handler:     handlers.GetEndCountOrderTotalByDate,
 	},
 	{
-		Description: "Search Archers score per end between set dates ORDER BY RoundNum",
-		SQL:         "SELECT endID, RoundNum, FirstName, LastName, round.RoundName, Date, Distance, TargetType, TOTAL FROM archer INNER JOIN end ON archer.ArcherID = end.ArcherID INNER JOIN round on round.RoundID = end.RoundID WHERE archer.ArcherID = 1 AND Approved = 1 AND round.RoundName = 'Hobart' AND Date between '2023-04-01' and '2023-04-20'ORDER BY RoundNum DESC LIMIT 15",
+		Description: "Select Score By Round Order By RoundNum",
+		SQL:         "SELECT RoundNum, round.RoundName, archer.ArcherID, archer.FirstName, Date, archer.LastName, SUM(total) AS RoundTotalSum FROM end INNER JOIN round on round.RoundID = end.RoundID INNER JOIN archer on archer.ArcherID = end.ArcherID WHERE archer.ArcherID = 1 AND Approved = 1 AND round.RoundName = 'Hobart' GROUP BY RoundNum, archer.ArcherID, archer.FirstName, archer.LastName, round.RoundName, Date ORDER BY RoundNum DESC LIMIT 10",
 		Handler:     handlers.GetEndCountOrderTotalByRoundNum,
 	},
 	{
@@ -47,8 +52,18 @@ var Options = []QueryOption{
 		Handler:     handlers.GetArcherScoreAboveValue,
 	},
 	{
-		Description: "Search championship scores using inner joins of Archer, End and Category tables",
-		SQL:         "SELECT archerevent.EventName, catergory.AgeGroup, catergory.GenderBracket, archer.FirstName, archer.LastName, SUM(TOTAL) as Total FROM end INNER JOIN archer ON archer.ArcherID = end.ArcherID INNER JOIN archerevent on archerevent.EventID = end.EventID INNER JOIN catergory on catergory.CatergoryID = end.CatergoryID WHERE end.EventID = 603 AND Approved = 1 GROUP BY end.ArcherID, catergory.AgeGroup, catergory.GenderBracket;",
+		Description: "Search championship scores by particular championship event name",
+		SQL:         "SELECT archerevent.EventName, catergory.AgeGroup, catergory.GenderBracket, archer.FirstName, archer.LastName, SUM(TOTAL) as Total FROM end INNER JOIN archer ON archer.ArcherID = end.ArcherID INNER JOIN archerevent on archerevent.EventID = end.EventID INNER JOIN catergory on catergory.CatergoryID = end.CatergoryID WHERE archerevent.EventName = 'December Championship' AND Approved = 1 GROUP BY end.ArcherID, catergory.AgeGroup, catergory.GenderBracket;",
 		Handler:     handlers.GetChampionScoresByEventID,
+	},
+	{
+		Description: "Select Personal Best For Selected Round",
+		SQL:         "SELECT MAX(round_total_sum) AS PB_total FROM (SELECT RoundNum, SUM(total) AS round_total_sum FROM end INNER JOIN round on round.RoundID = end.RoundID WHERE round.RoundName = 'Hobart' AND Approved = 1 AND ArcherID = 1  AND round.DateAdded IS NOT NULL and round.DateChange IS NULL GROUP BY RoundNum) AS round_sums",
+		Handler:     handlers.GetPersonalBestByRound,
+	},
+	{
+		Description: "Select Best Round For Particular Round Out Of All Archers",
+		SQL:         "SELECT archer.ArcherID, archer.FirstName, archer.LastName, MAX(round_total_sum) AS PB_total FROM (SELECT RoundNum, archer.ArcherID, archer.FirstName, archer.LastName, SUM(total) AS round_total_sum FROM end INNER JOIN round on round.RoundID = end.RoundID INNER JOIN archer on archer.ArcherID = end.ArcherID WHERE round.RoundName = 'Hobart' AND Approved = 1 AND round.DateAdded IS NOT NULL AND round.DateChange IS NULL GROUP BY RoundNum, archer.ArcherID, archer.FirstName, archer.LastName) AS round_sums INNER JOIN  archer on archer.ArcherID = round_sums.ArcherID GROUP BY archer.ArcherID",
+		Handler:     handlers.GetPersonalBestAllArchers,
 	},
 }

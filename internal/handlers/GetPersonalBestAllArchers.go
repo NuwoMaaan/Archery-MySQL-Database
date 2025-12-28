@@ -6,20 +6,19 @@ import (
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
 )
 
-func GetEndCountOrderTotalByRoundNum(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
+func GetPersonalBestAllArchers(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var result results.ArcherEndScores
+	var result results.PersonalBestOfArchers
 
 	for rows.Next() {
-		s := &results.ArcherEndScore{}
+		s := &results.PersonalBest{}
 		if err := rows.Scan(
-			&s.RoundNum, &s.RoundName, &s.ArcherID, &s.FirstName, &s.LastName,
-			&s.Date, &s.RoundTotalSum,
+			&s.ArcherID, &s.FirstName, &s.LastName, &s.PB_Total,
 		); err != nil {
 			return nil, err
 		}
