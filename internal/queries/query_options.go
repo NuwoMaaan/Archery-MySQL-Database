@@ -27,7 +27,7 @@ var Options = []QueryOption{
 		Handler:     handlers.GetEndCountTotal,
 	},
 	{
-		Description: "Score By Round Order By Total",
+		Description: "Select Score By Round Order By Total",
 		SQL:         "SELECT RoundNum, round.RoundName, archer.ArcherID, archer.FirstName, Date, archer.LastName, SUM(total) AS RoundTotalSum FROM end INNER JOIN round on round.RoundID = end.RoundID INNER JOIN archer on archer.ArcherID = end.ArcherID WHERE archer.ArcherID = 1 AND Approved = 1 AND round.RoundName = 'Hobart' AND Date between '2023-04-01' and '2023-04-20' GROUP BY RoundNum, archer.ArcherID, archer.FirstName, archer.LastName, round.RoundName, Date ORDER BY RoundTotalSum DESC LIMIT 10",
 		Handler:     handlers.GetEndCountOrderTotalByTotal,
 	},
