@@ -4,12 +4,12 @@ WORKDIR /build
 
 COPY . . 
 RUN go mod download
-RUN go build -o ./userapi
+RUN go build -o ./app ./cmd/app
  
 FROM gcr.io/distroless/base-debian12
 
 WORKDIR /app
-COPY --from=builder /build/userapi ./userapi
+COPY --from=builder /build/app ./app
 
-CMD ["/app/userapi"]
+CMD ["/app/app"]
 
