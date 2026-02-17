@@ -1,4 +1,4 @@
-package results
+package models
 
 import "fmt"
 
@@ -13,8 +13,7 @@ type ArcherEndScore struct {
 	RoundTotalSum int
 }
 
-func (result ArcherEndScores) Print(sql string) {
-	println("QUERY:", sql)
+func (result ArcherEndScores) Print() {
 	for _, r := range result {
 		fmt.Printf("RoundNum: %d RoundName: %s ArcherID: %d FirstName: %s LastName: %s Date: %s, RoundTotalSum: %d\n",
 			r.RoundNum, r.RoundName, r.ArcherID, r.FirstName, r.LastName, r.Date, r.RoundTotalSum)

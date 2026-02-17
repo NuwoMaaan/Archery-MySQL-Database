@@ -1,4 +1,4 @@
-package results
+package models
 
 import "fmt"
 
@@ -8,8 +8,7 @@ type Archer struct {
 	Gender    string
 }
 
-func (archer *Archer) Print(sql string) {
-	fmt.Println("QUERY:", sql)
+func (archer *Archer) Print() {
 	fmt.Println("RESULT:")
 	fmt.Println(" First Name:", archer.FirstName)
 	fmt.Println(" Last Name :", archer.LastName)

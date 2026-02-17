@@ -42,13 +42,18 @@ func MainMenu(db *sql.DB) {
 		}
 		selected := queries.Options[choice-1]
 
-		result, err := selected.Handler(db, selected.SQL)
+		if db == nil {
+			fmt.Println("Database not connected; selected option is disabled.")
+			continue
+		}
+
+		result, err := selected.Handler(db)
 		if err != nil {
 			fmt.Println("Error:", err)
 			continue
 		}
 
-		result.Print(selected.SQL)
+		result.Print()
 		fmt.Print("\n")
 	}
 }

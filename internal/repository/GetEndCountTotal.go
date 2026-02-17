@@ -1,22 +1,23 @@
-package handlers
+package repository
 
 import (
 	"database/sql"
 
-	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/results"
+	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/models"
 )
 
-func GetEndCountTotal(db *sql.DB, sqlStatement string) (results.QueryResult, error) {
-	rows, err := db.Query(sqlStatement)
+func GetEndCountTotal(db *sql.DB) (models.QueryResult, error) {
+	query := "SELECT ArcherID, COUNT(ArcherID) FROM end GROUP BY ArcherID"
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var result results.EndCounts
+	var result models.EndCounts
 
 	for rows.Next() {
-		s := &results.EndCount{}
+		s := &models.EndCount{}
 		if err := rows.Scan(&s.ArcherID, &s.Count); err != nil {
 			return nil, err
 		}
