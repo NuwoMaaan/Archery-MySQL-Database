@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"database/sql"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
@@ -18,8 +17,7 @@ func GetInput(prompt string, r *bufio.Reader) (string, error) {
 	return strings.TrimSpace(input), err
 }
 
-func MainMenu(db *sql.DB) {
-	reader := bufio.NewReader(os.Stdin)
+func MainMenu(db *sql.DB, reader *bufio.Reader) {
 
 	for {
 		fmt.Print("==== MENU ====\n")
@@ -42,13 +40,18 @@ func MainMenu(db *sql.DB) {
 		}
 		selected := queries.Options[choice-1]
 
-		result, err := selected.Handler(db, selected.SQL)
+		if db == nil {
+			fmt.Println("Database not connected; selected option is disabled.")
+			continue
+		}
+
+		result, err := selected.Handler(db)
 		if err != nil {
 			fmt.Println("Error:", err)
 			continue
 		}
 
-		result.Print(selected.SQL)
+		result.Print()
 		fmt.Print("\n")
 	}
 }

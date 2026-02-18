@@ -1,11 +1,10 @@
-package results
+package models
 
 import (
 	"fmt"
 )
 
-func (result PersonalBestOfArchers) Print(sql string) {
-	println("QUERY:", sql)
+func (result PersonalBestOfArchers) Print() {
 	for _, r := range result {
 		fmt.Printf(
 			"ArcherID: %d, FirstName: %s, LastName: %s, PersonalBest: %d\n",

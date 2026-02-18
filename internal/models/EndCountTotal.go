@@ -1,4 +1,4 @@
-package results
+package models
 
 import "fmt"
 
@@ -9,8 +9,7 @@ type EndCount struct {
 
 type EndCounts []*EndCount
 
-func (result EndCounts) Print(sql string) {
-	fmt.Println("Query:", sql)
+func (result EndCounts) Print() {
 	fmt.Println("Result:")
 	for _, r := range result {
 		fmt.Printf("ArcherID: %d, EndsCount: %d\n", r.ArcherID, r.Count)

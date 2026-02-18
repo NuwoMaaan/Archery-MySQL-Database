@@ -1,12 +1,11 @@
-package results
+package models
 
 import (
 	"database/sql"
 	"fmt"
 )
 
-func (result Details) Print(sql string) {
-	println("QUERY:", sql)
+func (result Details) Print() {
 	for _, r := range result {
 		fmt.Printf(
 			"RoundID: %d, RoundName: %s, AgeGroup: %s, GenderBracket: %s, BowType: %s\n"+
