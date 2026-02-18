@@ -1,19 +1,42 @@
 ## Overview
 
-This is a basic terminal application written in Golang which uses a relational database design I completed prior that is for an archery club. This project was for me to get my feet wet in programming with Golang, the application can be run with `docker-compose`, which seeds a MySQL database with mock data and the application will prompt predefined query options. The result will display the query string and the rows.
+This is a basic application written in Golang which uses a relational database design I completed prior that is for an archery club. This project was an introduction in programming with Golang for me, the application can be run with `docker-compose`, which seeds a MySQL database with mock data. Application will prompt for a choice of interface (Menu or API), `Menu` provides predefined query options to select from. `API` will allow http interaction through defined routes. Both utilise the same SQL queries and database. 
 
-(An explanation of the archery club requirements and database design will be added later on) 
+(**Note:** SQL queries are predefined purposefully to showcase requirements of the archery club, the database has limited mock data to few archers)
 
 ## Quick Start
 
 **Start application:**
-```powershell
+```
 docker compose run --rm menu-service
+
+(Note: Sometimes the SQL container may not start in time, wait and rerun the command)
+```
+**Select Interface Option:**
+```
+a) Menu - CLI interaction with database
+b) API - Starts api server for http interaction with database
+Enter option:
 ```
 **Stop application & remove database volume:**
-```powershell
+```
 docker-compose down
 docker volume rm archery-mysql-database_db_data
+```
+## Routes
+Base Route ```http://localhost:3000/ArcheryClub/```
+```
+/ArcheryClub
+	/get-archer 
+	/score-above
+	/champion-scores 
+	/score-by-date 
+	/score-by-total 
+	/end-count-total 
+	/score-by-roundnum 
+	/round-category-details 
+	/personal-best-by-round 
+	/personal-best-all-archers 
 ```
 ## Entity Relationship Diagram
 <img width="1265" height="758" alt="image" src="https://github.com/user-attachments/assets/1fad53c5-b7f8-4af0-afae-c10f46f143c6" />
