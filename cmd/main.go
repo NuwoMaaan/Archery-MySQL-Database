@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 
+	"github.com/NuwoMaaan/Archery-MySQL-Database/cmd/app"
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/connection"
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/menu"
 )
@@ -23,11 +25,11 @@ func main() {
 
 	fmt.Println("Successful connection to database:", cfg.DBName)
 
-	// app := app.New(db)
-	// err = app.Start(context.TODO())
-	// if err != nil {
-	// 	fmt.Println("Application start failure:", err)
-	// }
+	app := app.New(db)
+	err = app.Start(context.TODO())
+	if err != nil {
+		fmt.Println("Application start failure:", err)
+	}
 
 	menu.MainMenu(db)
 
