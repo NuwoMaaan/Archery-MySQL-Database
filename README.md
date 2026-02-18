@@ -8,7 +8,7 @@ This is a basic application written in Golang which uses a relational database d
 
 **Start application:**
 ```
-docker compose run --rm menu-service
+docker compose run --rm --service-ports menu-service
 
 (Note: Sometimes the SQL container may not start in time, wait and rerun the command)
 ```
