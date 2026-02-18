@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/NuwoMaaan/Archery-MySQL-Database/cmd/app"
 	"github.com/NuwoMaaan/Archery-MySQL-Database/internal/connection"
@@ -24,13 +27,24 @@ func main() {
 	defer db.Close()
 
 	fmt.Println("Successful connection to database:", cfg.DBName)
+	fmt.Println("a) Menu - CLI interaction with database")
+	fmt.Println("b) API - Starts api server for http interaction with database")
 
-	app := app.New(db)
-	err = app.Start(context.TODO())
-	if err != nil {
-		fmt.Println("Application start failure:", err)
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		input, _ := menu.GetInput("Enter option:", reader)
+
+		switch strings.ToLower(input) {
+		case "a":
+			menu.MainMenu(db, reader)
+			return
+		case "b":
+			app := app.New(db)
+			_ = app.Start(context.TODO())
+			return
+		default:
+			fmt.Println("Please choose a or b")
+		}
 	}
-
-	menu.MainMenu(db)
 
 }
