@@ -36,9 +36,11 @@ func main() {
 
 		switch strings.ToLower(input) {
 		case "a":
+			fmt.Println("Starting Menu...")
 			menu.MainMenu(db, reader)
 			return
 		case "b":
+			fmt.Println("Starting API Server...")
 			app := app.New(db)
 			_ = app.Start(context.TODO())
 			return
